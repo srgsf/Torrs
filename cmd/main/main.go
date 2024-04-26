@@ -5,26 +5,31 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"torrsru/db/search"
 	"torrsru/db/sync"
 	"torrsru/web"
 	"torrsru/web/global"
 )
 
-func main() {
+var version = "unknown"
+var port = flag.Int("port", 8094, "port for web")
+var db string
+
+func init() {
 	pwd := filepath.Dir(os.Args[0])
 	pwd, _ = filepath.Abs(pwd)
-	log.Println("PWD:", pwd)
 	global.PWD = pwd
-	sync.Init()
+	flag.StringVar(&db, "db", filepath.Join(pwd, "torrents.db"), "data store file")
+}
+
+func main() {
+	log.Println("torrs version: ", version)
+	global.VERSION = version
+	flag.Parse()
+	log.Println("PWD:", global.PWD)
+	sync.Init(db)
 	search.UpdateIndex()
 
-	port := flag.String("port", "8094", "port for web")
-
-	if port == nil {
-		p := "8094"
-		port = &p
-	}
-
-	web.Start(*port)
+	web.Start(strconv.Itoa(*port))
 }

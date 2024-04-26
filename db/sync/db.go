@@ -3,20 +3,19 @@ package sync
 import (
 	"encoding/binary"
 	"encoding/json"
-	bolt "go.etcd.io/bbolt"
 	"log"
-	"path/filepath"
 	"time"
 	"torrsru/models/fdb"
-	"torrsru/web/global"
+
+	bolt "go.etcd.io/bbolt"
 )
 
 var (
 	db *bolt.DB
 )
 
-func Init() {
-	d, err := bolt.Open(filepath.Join(global.PWD, "torrents.db"), 0o666, &bolt.Options{Timeout: 5 * time.Second})
+func Init(dbPath string) {
+	d, err := bolt.Open(dbPath, 0o666, &bolt.Options{Timeout: 5 * time.Second})
 	if err != nil {
 		log.Fatalln("Error open db", err)
 		return

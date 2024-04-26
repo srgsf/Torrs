@@ -1,0 +1,36 @@
+before:
+  hooks:
+    - go mod tidy
+    - go run ./cmd/genpages/gen_pages.go
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    main: ./cmd/main
+    binary: torrs
+    ldflags: "-s -w -X main.version={{.Tag}}-{{.ShortCommit}}-{{.CommitDate}}"
+
+archives:
+  - name_template: >-
+      {{- .ProjectName }}_
+      {{- .Tag }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+    format_overrides:
+     - goos: windows
+       format: zip
+    files:
+     - views
+
+checksum:
+  name_template: 'checksums.txt'
+

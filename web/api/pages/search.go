@@ -4,12 +4,14 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"torrsru/db/search"
+	"torrsru/web/global"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Search(c *gin.Context) {
@@ -31,4 +33,8 @@ func Search(c *gin.Context) {
 	etag := fmt.Sprintf("%x", md5.Sum([]byte(estr)))
 	c.Header("ETag", etag)
 	c.Data(200, "application/javascript; charset=utf-8", buf)
+}
+
+func Ping(c *gin.Context) {
+	c.Data(http.StatusOK, "text/plain", []byte(global.VERSION))
 }

@@ -1,6 +1,6 @@
 module torrsru
 
-go 1.22.0
+go 1.22
 
 require (
 	github.com/agnivade/levenshtein v1.1.1

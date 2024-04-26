@@ -1,8 +1,6 @@
 package web
 
 import (
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -11,6 +9,9 @@ import (
 	"torrsru/web/api"
 	"torrsru/web/global"
 	"torrsru/web/static"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
 func Start(port string) {
